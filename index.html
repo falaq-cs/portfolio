@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Diagnose Module</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Material Symbols for clean icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+
+    <!-- SCREEN 1: SPLASH SCREEN -->
+    <div id="screen-splash" class="screen active">
+        <div class="splash-content">
+            <div class="rocket-container">
+                <span class="material-symbols-outlined rocket-icon">rocket_launch</span>
+            </div>
+            <div class="progress-ring-container">
+                <div class="progress-ring">
+                    <span class="progress-text">H</span>
+                </div>
+            </div>
+            <h2>'STARTING SCAN'</h2>
+            <p class="status-subtext">Analyzing 10 Systems...</p>
+            <p class="footer-subtext">Establishing Hardware Baseline</p>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: PERMISSION AUDIT -->
+    <div id="screen-permissions" class="screen">
+        <div class="app-bar">
+            <span class="material-symbols-outlined back-btn" onclick="navigateTo('screen-splash')">arrow_back</span>
+            <h1>'PERMISSION CHECK'</h1>
+        </div>
+        <div class="screen-content">
+            <div class="shield-container">
+                <span class="material-symbols-outlined shield-icon">shield_with_heart</span>
+            </div>
+            
+            <div class="permission-list">
+                <label class="permission-item">
+                    <input type="checkbox" id="perm-location" checked disabled>
+                    <span class="custom-checkbox"></span>
+                    <span class="permission-text">LOCATION</span>
+                </label>
+                <label class="permission-item">
+                    <input type="checkbox" id="perm-sms" checked disabled>
+                    <span class="custom-checkbox"></span>
+                    <span class="permission-text">SMS PATH</span>
+                </label>
+                <label class="permission-item">
+                    <input type="checkbox" id="perm-sensors">
+                    <span class="custom-checkbox"></span>
+                    <span class="permission-text">SENSOR ACCESS</span>
+                </label>
+            </div>
+
+            <p class="permission-note">Safety access required before diagnostics can continue.</p>
+            <button class="btn btn-primary" onclick="grantPermissions()">GRANT ESSENTIAL PERMISSIONS</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3: DIAGNOSTICS DASHBOARD -->
+    <div id="screen-dashboard" class="screen">
+        <div class="app-bar">
+            <span class="material-symbols-outlined back-btn" onclick="navigateTo('screen-permissions')">arrow_back</span>
+            <h1>SYSTEM HEALTH DASHBOARD</h1>
+        </div>
+        <div class="screen-content">
+            <div class="overall-status-card">
+                <h2>OVERALL STATUS:</h2>
+                <h3 id="overall-text" class="status-pass">HEALTHY (9/10 PASS)</h3>
+            </div>
+
+            <div class="grid-dashboard">
+                <!-- Card 1 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Sensors', 'sensors', 'Streaming real-time X, Y, Z coordinates securely.', true)">
+                    <span class="material-symbols-outlined card-icon">sensors</span>
+                    <span class="card-label">Sensors</span>
+                    <span class="card-pkg">Icons.sensors</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 2 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('GPS', 'location_on', 'Satellite lock active. Accuracy radius < 15 meters.', true)">
+                    <span class="material-symbols-outlined card-icon">location_on</span>
+                    <span class="card-label">GPS</span>
+                    <span class="card-pkg">Icons.location_on</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 3 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Signal', 'signal_cellular_alt', 'Cellular path network latency is stable.', true)">
+                    <span class="material-symbols-outlined card-icon">signal_cellular_alt</span>
+                    <span class="card-label">Signal</span>
+                    <span class="card-pkg">Icons.signal_cellular_alt</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 4 -->
+                <div class="diagnostic-card fail" onclick="openDeepDive('Alarm Sound', 'volume_up', 'Audio system verification required.', false)">
+                    <span class="material-symbols-outlined card-icon">volume_up</span>
+                    <span class="card-label">Sound</span>
+                    <span class="card-pkg">Icons.volume_up</span>
+                    <span class="badge">TEST</span>
+                </div>
+                <!-- Card 5 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Haptic', 'vibration', 'Haptic feedback pulse sequence confirmed.', true)">
+                    <span class="material-symbols-outlined card-icon">vibration</span>
+                    <span class="card-label">Haptic</span>
+                    <span class="card-pkg">Icons.vibration</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 6 -->
+                <div class="diagnostic-card warning" onclick="openDeepDive('Battery', 'battery_alert', 'Battery remaining is low. System throttling imminent.', true)">
+                    <span class="material-symbols-outlined card-icon">battery_alert</span>
+                    <span class="card-label">Battery</span>
+                    <span class="card-pkg">Icons.battery_alert</span>
+                    <span class="badge">WARN 14%</span>
+                </div>
+                <!-- Card 7 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('RAM', 'memory', 'Volatile memory allocations within safety thresholds.', true)">
+                    <span class="material-symbols-outlined card-icon">memory</span>
+                    <span class="card-label">RAM</span>
+                    <span class="card-pkg">Icons.memory</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 8 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Database', 'storage', 'SQLite tables successfully checked for integrity.', true)">
+                    <span class="material-symbols-outlined card-icon">storage</span>
+                    <span class="card-label">Database</span>
+                    <span class="card-pkg">Icons.storage</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 9 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Touch Screen', 'touch_app', 'Digitizer array reading contact metrics perfectly.', true)">
+                    <span class="material-symbols-outlined card-icon">touch_app</span>
+                    <span class="card-label">Touch Screen</span>
+                    <span class="card-pkg">Icons.touch_app</span>
+                    <span class="badge">PASS</span>
+                </div>
+                <!-- Card 10 -->
+                <div class="diagnostic-card pass" onclick="openDeepDive('Permissions', 'admin_panel_settings', 'All running security policies are explicitly granted.', true)">
+                    <span class="material-symbols-outlined card-icon">admin_panel_settings</span>
+                    <span class="card-label">Permissions</span>
+                    <span class="card-pkg">Icons.admin_panel_settings</span>
+                    <span class="badge">PASS</span>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="triggerFullScanAnimation()">RUN FULL SCAN</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 4: DEEP DIVE & CONFIRMATION -->
+    <div id="screen-deepdive" class="screen">
+        <div class="app-bar">
+            <span class="material-symbols-outlined back-btn" onclick="navigateTo('screen-dashboard')">arrow_back</span>
+            <h1>COMPONENT DETAIL</h1>
+        </div>
+        <div class="screen-content deepdive-wrapper">
+            <div class="stacked-card-background bg-1">2. MODUL'I-HINTAIL</div>
+            
+            <div class="main-deepdive-card">
+                <h2 id="deepdive-title">4. ALARM SOUND</h2>
+                
+                <div class="interactive-zone">
+                    <span class="material-symbols-outlined giant-icon" id="deepdive-icon">volume_up</span>
+                    <p id="deepdive-status-text">PLAYING TEST CHIRP...</p>
+                    <div class="pulse-bar-container">
+                        <div class="pulse-bar" id="pulse-indicator"></div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-action-success" onclick="closeDeepDiveAction(true)">
+                        YES, I HEARD IT <span class="material-symbols-outlined">check</span>
+                    </button>
+                    <button class="btn btn-action-fail" onclick="closeDeepDiveAction(false)">
+                        NO, RETEST <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
